@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiketing Pesawat</title>
+
+    <!-- link css dan js dari bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="bootstrap.css">
+
+    <!-- css -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .banner {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron">
+        <img src="jumbotron.jpg" alt="banner pesawat" width="600px" height="400px" class="banner">
+    </div>
+    <h3 class="text-center mb-3">Pendaftaran Rute Pesawat</h3>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6 border shadow-lg p-5 rounded" >
+            <form > 
+                <div class="form-group row">
+                    <label for="maskapai" class="col-sm-3 col-form-label">Maskapai</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm" id="maskapai">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="bandaraAsal" class="col-sm-3 col-form-label">Bandara Asal</label>
+                    <div class="col-sm-9">
+                        <select name="bandaraAsal" class="form-control form-control-sm" id="bandaraAsal"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="bandaratujuan" class="col-sm-3 col-form-label">Bandara Tujuan</label>
+                    <div class="col-sm-9">
+                        <select name="bandaraTujuan" class="form-control form-control-sm" id="bandaraTujuan"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="hargatiket" class="col-sm-3 col-form-label">Harga Tiket</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control form-control-sm " id="hargatiket">
+                    </div>
+                </div>
+                <button type="button" id="btnProses" class="btn btn-primary">Submit Data</button>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+
+    <div class="container mt-5">
+        <h4 class="text-center">Rute Penerbangan</h4>
+        <table class="table table-light shadow rounded">
+            <thead class="thead-light">
+                <tr>
+                    <th>No</th>
+                    <th>Maskapai</th>
+                    <th>Bandara Asal</th>
+                    <th>Bandara Tujuan</th>
+                    <th>Harga Tiket</th>
+                    <th>Pajak</th>
+                    <th>Harga Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="datakosong">
+                    <td colspan="7">Belum Ada Data</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        //const atau data pajak bandara
+        const pajakbandara = [];
+        //tambahkan json pada pajakbandara
+        pajakbandara [0]={
+            id : 1,
+            bandara : 'Soekarno Hatta (CGK)',
+            pajak : 50000
+        };
+        pajakbandara [1]={
+            id : 2,
+            bandara : 'Husein Sasatra Negara (BDO)',
+            pajak : 30000
+        };
+        pajakbandara [2]={
+            id : 3,
+            bandara : 'Abdurahman Shaleh (MLG)',
+            pajak : 40000
+        };
+        pajakbandara [3]={
+            id : 4,
+            bandara : 'Juanda (SUB)',
+            pajak : 40000
+        };
+        pajakbandara [4]={
+            id : 5,
+            bandara : 'Ngurah Rai (DPS)',
+            pajak : 80000
+        };
+        pajakbandara [5]={
+            id : 6,
+            bandara : 'Hassanudin (UPG)',
+            pajak : 70000
+        };
+        pajakbandara [6]={
+            id : 7,
+            bandara : 'Inanwatan (INX)',
+            pajak : 90000
+        };
+        pajakbandara [7]={
+            id : 8,
+            bandara : 'Sultan Iskandarmuda (BTJ)',
+            pajak : 70000
+        };
+
+        console.log(pajakbandara);
+
+        $(document).ready(function (){
+            //tambah dinamic drowpdown bandara
+            let drowpdown1 = $('#bandaraAsal');
+            let drowpdown2 = $('#bandaraTujuan');
+
+            drowpdown1.empty();
+            $.each(pajakbandara, function(key, entry){
+                drowpdown1.append($('<option></option>').attr('value', entry.id).attr('data-pajak', entry.pajak).text(entry.bandara));
+            })
+
+            //dinamic dropdowm2
+            drowpdown2.empty();
+            $.each(pajakbandara, function(key, entry){
+                drowpdown2.append($('<option></option>').attr('value', entry.id).attr('data-pajak', entry.pajak).text(entry.bandara));
+            })
+
+            //fungsi menghapus row datakosong
+            function hideDataKosong(){
+                $('#datakosong').hide();
+            }
+
+            //deklarasi variable no
+            let no = 1;
+
+            $('#btnProses').click(function(){
+                //memanggil fungsi menyembunyikan row data yang kosong
+                hideDataKosong();
+
+                //memanggil data dari form
+                let maskapai = $('#maskapai').val();
+                let bdrAsal = $('#bandaraAsal option:selected').text();
+                let bdrTujuan = $('#bandaraTujuan option:selected').text();
+
+                let pajak1 = $('#bandaraAsal option:selected').attr('data-pajak');
+                let pajak2 = $('#bandaraTujuan option:selected').attr('data-pajak');
+
+                //konversi data string ke integer dan menghitung jumlah pajak
+                let pajak = parseInt(pajak1) + parseInt(pajak2);
+                //menghitung total harga tiket
+                let harga = $('#hargatiket').val();
+                let total = parseInt(harga) + pajak;
+
+                // console.log(maskapai);
+                // console.log(bdrAsal);
+                // console.log(pajak1);
+                // console.log(pajak);
+                // console.log(total);
+
+                //menampilkan data pada table
+                markup = "<tr><td>" + no + "</td><td>" + maskapai + "</td><td>" + bdrAsal + "</td><td>"
+                    + bdrTujuan + "</td><td>" + harga + "</td><td>" + pajak + "</td><td>" + total + "</td></tr";
+                tableBody = $("table tbody");
+                tableBody.append(markup);
+                no++;
+
+                //reset tabel data ke Js native
+                formObject.reset();
+            });
+        });
+    </script>
+</body>
+
+</html>
